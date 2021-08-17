@@ -48,5 +48,3 @@ dist/
 
 # Prisma related files
 dmmf.json
-
-package-lock.json
