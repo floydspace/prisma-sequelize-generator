@@ -1,9 +1,10 @@
-[![Actions Status](https://github.com/floydspace/prisma-sequelize-generator/workflows/build/badge.svg)](https://github.com/floydspace/prisma-sequelize-generator/actions)
-[![Code QL](https://github.com/floydspace/prisma-sequelize-generator/workflows/CodeQL/badge.svg)](https://github.com/floydspace/prisma-sequelize-generator/workflows/CodeQL/badge.svg)
-[![npm](https://img.shields.io/npm/v/prisma-sequelize-generator)](https://www.npmjs.com/package/prisma-sequelize-generator)
-[![GitHub license](https://img.shields.io/github/license/Naereen/StrapDown.js.svg)](https://github.com/floydspace/prisma-sequelize-generator/blob/master/LICENSE)
+[![Generic badge](https://img.shields.io/badge/Generator%20for-◭%20Prisma-9F7AEA.svg)](https://www.prisma.io)
+[![npm version](https://img.shields.io/npm/v/prisma-sequelize-generator?label=npm%20package)](https://www.npmjs.com/package/prisma-sequelize-generator)
+[![npm downloads](https://img.shields.io/npm/dm/prisma-sequelize-generator)](https://www.npmjs.com/package/prisma-sequelize-generator)
+[![build status](https://img.shields.io/github/workflow/status/floydspace/prisma-sequelize-generator/release)](https://github.com/floydspace/prisma-sequelize-generator/actions/workflows/release.yml)
+[![Code QL](https://github.com/floydspace/prisma-sequelize-generator/workflows/CodeQL/badge.svg)](https://github.com/floydspace/prisma-sequelize-generator/actions/workflows/codeql-analysis.yml)
 [![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://github.com/semantic-release/semantic-release)
-[![Open Source? Yes!](https://badgen.net/badge/Open%20Source%20%3F/Yes%21/blue?icon=github)](https://github.com/Naereen/badges/)
+[![GitHub license](https://img.shields.io/github/license/Naereen/StrapDown.js.svg)](https://github.com/floydspace/prisma-sequelize-generator/blob/master/LICENSE)
 
 # Prisma Sequelize Generator
 
