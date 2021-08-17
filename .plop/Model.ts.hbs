@@ -1,0 +1,15 @@
+import {Optional, Sequelize, ModelAttributes, Model, DataTypes} from 'sequelize';
+
+export const {{model.name}}Factory = (sequelize: Sequelize) => {
+  const {{model.name}} = sequelize.define('{{model.name}}', {
+  {{#each scalarFields}}
+    {{name}}: {
+      type: DataTypes.{{type}},
+    },
+  {{/each}}
+  }, {
+    tableName: '{{#if model.dbName}}{{model.dbName}}{{else}}{{model.name}}{{/if}}'
+  });
+
+  return {{model.name}};
+};

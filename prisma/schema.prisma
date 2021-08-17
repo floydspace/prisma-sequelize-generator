@@ -13,7 +13,7 @@ model User {
   email       String   @unique
   weight      Float?
   is18        Boolean?
-  name        String?
+  name        String?  @db.VarChar(255)
   successorId Int?
   successor   User?    @relation("BlogOwnerHistory", fields: [successorId], references: [id])
   predecessor User?    @relation("BlogOwnerHistory")
@@ -27,6 +27,8 @@ model Post {
   id     Int   @id @default(autoincrement())
   user   User? @relation(fields: [userId], references: [id])
   userId Int?
+
+  @@map("Posts")
 }
 
 enum Role {
