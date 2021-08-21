@@ -59,17 +59,26 @@ generatorHandler({
           relativeOutputDir,
           slsRelativeOutputDir,
         }),
-        ...options.dmmf.datamodel.models.map((model) =>
-          modelGenerator.runActions({
+        ...options.dmmf.datamodel.models.map((model) => {
+          const attributes = model.fields.map((field) => field.name);
+          return modelGenerator.runActions({
             model,
             scalarFields: model.fields
               .filter((field) => field.kind === 'scalar')
+              .filter((field) => !['createdAt', 'updatedAt', 'deletedAt'].includes(field.name))
               .map((field) => ({
+                ...field,
                 name: field.name,
                 type: PrismaTypeToSequelizeType[field.type],
+                allowNull: !field.isRequired,
+                isAutoincrement:
+                  field.hasDefaultValue && typeof field.default === 'object' && field.default.name === 'autoincrement',
               })),
-          })
-        ),
+            hasCreatedAt: attributes.includes('createdAt'),
+            hasUpdatedAt: attributes.includes('updatedAt'),
+            hasDeletedAt: attributes.includes('deletedAt'),
+          });
+        }),
       ]);
     } catch (e) {
       console.error('Error: unable to write files for Prisma Sequelize Generator');

@@ -4,12 +4,14 @@ export const UserFactory = (sequelize: Sequelize) => {
   const User = sequelize.define('User', {
     id: {
       type: DataTypes.INTEGER,
-    },
-    createdAt: {
-      type: DataTypes.DATE,
+      allowNull: false,
+      primaryKey: true,
+      autoIncrement: true,
     },
     email: {
       type: DataTypes.STRING,
+      allowNull: false,
+      unique: true,
     },
     weight: {
       type: DataTypes.FLOAT,
@@ -24,13 +26,17 @@ export const UserFactory = (sequelize: Sequelize) => {
       type: DataTypes.INTEGER,
     },
     keywords: {
-      type: DataTypes.STRING,
+      type: DataTypes.ARRAY(DataTypes.STRING),
+      allowNull: false,
     },
     biography: {
       type: DataTypes.JSONB,
+      allowNull: false,
     },
   }, {
-    tableName: 'User'
+    tableName: 'User',
+    timestamps: true,
+    updatedAt: false,
   });
 
   return User;
