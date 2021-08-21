@@ -1,41 +1,67 @@
 import { ModelCtor, Sequelize } from 'sequelize';
+import { tryLoadEnvs } from '@prisma/sdk';
+import path from 'path';
+import { findSync, parseDatabaseUrl } from './utils';
 
-import config from '../config/config.json';
+const dirname = findSync(process.cwd(), ['prisma/models', 'models'], ['d'], ['d'], 1)[0] || __dirname;
+
 import { UserFactory } from './User';
 import { PostFactory } from './Post';
 
-const env = process.env.NODE_ENV != 'prd' ? 'development' : 'production';
-const {username, password, database, host, port} = config[env];
+const config = {
+  "generator": {
+    "name": "models",
+    "provider": {
+      "fromEnvVar": null,
+      "value": "node ./dist/generator.js"
+    },
+    "output": {
+      "value": "/Users/victor/Projects/_own/prisma-sequelize-generator/prisma/models",
+      "fromEnvVar": "null"
+    },
+    "config": {},
+    "binaryTargets": [],
+    "previewFeatures": []
+  },
+  "relativeEnvPaths": {
+    "rootEnvPath": "../../.env",
+    "schemaEnvPath": "../../.env"
+  },
+  "datasource": {
+    "name": "db",
+    "provider": "postgresql",
+    "activeProvider": "postgresql",
+    "url": {
+      "fromEnvVar": "DATABASE_URL",
+      "value": null
+    }
+  }
+};
+
+const loadedEnv = tryLoadEnvs({
+  rootEnvPath: config.relativeEnvPaths.rootEnvPath && path.resolve(dirname, config.relativeEnvPaths.rootEnvPath),
+  schemaEnvPath: config.relativeEnvPaths.schemaEnvPath && path.resolve(dirname, config.relativeEnvPaths.schemaEnvPath),
+});
+const env = loadedEnv ? loadedEnv.parsed : {};
+const databaseUrl = config.datasource.url.fromEnvVar
+  ? env[config.datasource.url.fromEnvVar]
+  : config.datasource.url.value;
+const { driver, user, password, host, port, database } = parseDatabaseUrl(databaseUrl);
 
 export const createInstance = async () => {
-  const sequelize = new Sequelize(
-    database,
-    username,
-    password,
-    {
-      host,
-      port,
-      ssl: true,
-      dialect: 'postgres',
-      dialectModule: pg,
-      pool: {},
-      dialectOptions: {
-        connectTimeout: process.env.CONNECTION_TIMEOUT
-      },
-      define: {
-        freezeTableName: true,
-        timestamps: true,
-        paranoid: true
-      }
-    },
-  );
+  const sequelize = new Sequelize(database, user, password, {
+    host,
+    port,
+    ssl: true,
+    dialect: driver,
+  });
 
   const models = {
     User: UserFactory(sequelize),
     Post: PostFactory(sequelize),
   };
 
-  Object.keys(models).forEach(model => {
+  Object.keys(models).forEach((model) => {
     if (models[model].associate) {
       models[model].associate(models);
     }
@@ -49,6 +75,6 @@ export const createInstance = async () => {
 
   return {
     sequelize,
-    models
+    models,
   };
 };

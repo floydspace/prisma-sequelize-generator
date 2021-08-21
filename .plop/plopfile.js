@@ -1,6 +1,26 @@
 const path = require('path');
 
 module.exports = function (plop) {
+  plop.setGenerator('utils', {
+    actions: () => [
+      {
+        type: 'add',
+        path: 'utils/find.ts',
+        templateFile: path.join(__dirname, './utils/find.ts.hbs'),
+      },
+      {
+        type: 'add',
+        path: 'utils/parseDatabaseUrl.ts',
+        templateFile: path.join(__dirname, './utils/parseDatabaseUrl.ts.hbs'),
+      },
+      {
+        type: 'add',
+        path: 'utils/index.ts',
+        templateFile: path.join(__dirname, './utils/index.ts.hbs'),
+      },
+    ],
+  });
+
   plop.setGenerator('index.ts', {
     actions: () => [
       {

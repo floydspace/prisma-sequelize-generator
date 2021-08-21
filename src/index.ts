@@ -1,9 +1,12 @@
 import { generatorHandler } from '@prisma/generator-helper';
-import { parseEnvValue } from '@prisma/sdk';
+import { parseEnvValue, getEnvPaths } from '@prisma/sdk';
 import nodePlop from 'node-plop';
 import * as path from 'path';
 
 import { PrismaTypeToSequelizeType } from './mappers';
+
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+// const pkg = require('../package.json');
 
 generatorHandler({
   onManifest() {
@@ -25,11 +28,37 @@ generatorHandler({
 
     try {
       const plop = nodePlop(path.join(__dirname, '../.plop/plopfile.js'), { destBasePath: outputDir, force: true });
+      const utilsGenerator = plop.getGenerator('utils');
       const indexGenerator = plop.getGenerator('index.ts');
       const modelGenerator = plop.getGenerator('Model.ts');
 
+      const schemaDir = options.schemaPath ? path.dirname(options.schemaPath) : process.cwd();
+      const schemaPath = path.join(schemaDir, 'prisma.schema');
+      const envPaths = getEnvPaths(schemaPath, { cwd: outputDir });
+
+      const config = {
+        generator: options.generator,
+        relativeEnvPaths: {
+          rootEnvPath: envPaths.rootEnvPath && path.relative(outputDir, envPaths.rootEnvPath),
+          schemaEnvPath: envPaths.schemaEnvPath && path.relative(outputDir, envPaths.schemaEnvPath),
+        },
+        // relativePath: path.relative(outputDir, schemaDir),
+        // clientVersion: pkg.version,
+        // engineVersion: options.version,
+        // datasourceNames: options.datasources.map((d) => d.name),
+        datasource: options.datasources[0],
+      };
+      const relativeOutputDir = path.relative(process.cwd(), outputDir);
+      const slsRelativeOutputDir = path.relative(process.cwd(), outputDir).split(path.sep).slice(1).join(path.sep);
+
       await Promise.all([
-        indexGenerator.runActions({ models: options.dmmf.datamodel.models }),
+        utilsGenerator.runActions({}),
+        indexGenerator.runActions({
+          models: options.dmmf.datamodel.models,
+          config: JSON.stringify(config, null, 2),
+          relativeOutputDir,
+          slsRelativeOutputDir,
+        }),
         ...options.dmmf.datamodel.models.map((model) =>
           modelGenerator.runActions({
             model,

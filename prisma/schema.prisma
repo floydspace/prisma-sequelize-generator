@@ -1,4 +1,4 @@
-generator client {
+generator models {
   provider = "node ./dist/generator.js"
 }
 
