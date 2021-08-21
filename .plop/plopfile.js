@@ -10,11 +10,6 @@ module.exports = function (plop) {
       },
       {
         type: 'add',
-        path: 'utils/parseDatabaseUrl.ts',
-        templateFile: path.join(__dirname, './utils/parseDatabaseUrl.ts.hbs'),
-      },
-      {
-        type: 'add',
         path: 'utils/index.ts',
         templateFile: path.join(__dirname, './utils/index.ts.hbs'),
       },

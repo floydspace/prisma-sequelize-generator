@@ -1,7 +1,7 @@
 import { ModelCtor, Sequelize } from 'sequelize';
 import { tryLoadEnvs } from '@prisma/sdk';
 import path from 'path';
-import { findSync, parseDatabaseUrl } from './utils';
+import { findSync } from './utils';
 
 const dirname = findSync(process.cwd(), ['prisma/models', 'models'], ['d'], ['d'], 1)[0] || __dirname;
 
@@ -42,18 +42,17 @@ const loadedEnv = tryLoadEnvs({
   rootEnvPath: config.relativeEnvPaths.rootEnvPath && path.resolve(dirname, config.relativeEnvPaths.rootEnvPath),
   schemaEnvPath: config.relativeEnvPaths.schemaEnvPath && path.resolve(dirname, config.relativeEnvPaths.schemaEnvPath),
 });
-const env = loadedEnv ? loadedEnv.parsed : {};
+const env = { ...(loadedEnv ? loadedEnv.parsed : {}), ...process.env };
 const databaseUrl = config.datasource.url.fromEnvVar
   ? env[config.datasource.url.fromEnvVar]
   : config.datasource.url.value;
-const { driver, user, password, host, port, database } = parseDatabaseUrl(databaseUrl);
 
 export const createInstance = async () => {
-  const sequelize = new Sequelize(database, user, password, {
-    host,
-    port,
+  const sequelize = new Sequelize(databaseUrl, {
     ssl: true,
-    dialect: driver,
+    define: {
+      freezeTableName: true,
+    },
   });
 
   const models = {
