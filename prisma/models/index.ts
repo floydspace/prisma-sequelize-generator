@@ -55,20 +55,7 @@ export const createInstance = async () => {
     },
   });
 
-  const models = {
-    User: UserFactory(sequelize),
-    Post: PostFactory(sequelize),
-  };
-
-  Object.keys(models).forEach((model) => {
-    if (models[model].associate) {
-      models[model].associate(models);
-    }
-
-    if (models[model].hooks) {
-      models[model].hooks(models);
-    }
-  });
+  const models = prepareModels(sequelize);
 
   await sequelize.authenticate();
 
@@ -77,3 +64,17 @@ export const createInstance = async () => {
     models,
   };
 };
+
+function prepareModels(sequelize: Sequelize) {
+  const models = {
+    User: UserFactory(sequelize),
+    Post: PostFactory(sequelize),
+  };
+
+  Object.keys(models).forEach((model) => {
+    models[model].associate?.(models);
+    models[model].hooks?.(models);
+  });
+
+  return models;
+}
