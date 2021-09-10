@@ -2,10 +2,16 @@ import { Sequelize, Model, DataTypes, ModelCtor } from 'sequelize';
 
 export const {{model.name}}Factory = (sequelize: Sequelize) => {
   class {{model.name}} extends Model {
-    {{#if relationFields}}
+    {{#if (or belongsToFields (or hasManyFields hasOneFields))}}
     static associate(models: Record<string, ModelCtor<Model>>) {
-    {{#each relationFields}}
-      this.belongsTo(models.{{name}}, { targetKey: '{{targetKey}}', foreignKey: '{{foreignKey}}' });
+    {{#each belongsToFields}}
+      this.belongsTo(models.{{name}}, { as: '{{as}}', targetKey: '{{targetKey}}', foreignKey: '{{foreignKey}}' });
+    {{/each}}
+    {{#each hasManyFields}}
+      this.hasMany(models.{{name}}, { as: '{{as}}' });
+    {{/each}}
+    {{#each hasOneFields}}
+      this.hasOne(models.{{name}}, { as: '{{as}}' });
     {{/each}}
     }
     {{/if}}

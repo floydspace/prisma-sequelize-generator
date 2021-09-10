@@ -74,13 +74,28 @@ generatorHandler({
                 isAutoincrement:
                   field.hasDefaultValue && typeof field.default === 'object' && field.default.name === 'autoincrement',
               })),
-            relationFields: model.fields
+            belongsToFields: model.fields
               .filter((field) => field.kind === 'object')
-              .filter((field) => !field.isList)
+              .filter((field) => !field.isList && field.relationToFields!.length)
               .map((field) => ({
+                as: field.name,
                 name: field.type,
                 targetKey: field.relationToFields![0],
                 foreignKey: field.relationFromFields[0],
+              })),
+            hasOneFields: model.fields
+              .filter((field) => field.kind === 'object')
+              .filter((field) => !field.isList && !field.relationToFields?.length)
+              .map((field) => ({
+                as: field.name,
+                name: field.type,
+              })),
+            hasManyFields: model.fields
+              .filter((field) => field.kind === 'object')
+              .filter((field) => field.isList)
+              .map((field) => ({
+                as: field.name,
+                name: field.type,
               })),
             hasCreatedAt: attributes.includes('createdAt'),
             hasUpdatedAt: attributes.includes('updatedAt'),

@@ -3,7 +3,7 @@ import { Sequelize, Model, DataTypes, ModelCtor } from 'sequelize';
 export const PostFactory = (sequelize: Sequelize) => {
   class Post extends Model {
     static associate(models: Record<string, ModelCtor<Model>>) {
-      this.belongsTo(models.User, { targetKey: 'id', foreignKey: 'userId' });
+      this.belongsTo(models.User, { as: 'user', targetKey: 'id', foreignKey: 'userId' });
     }
   }
 

@@ -3,8 +3,9 @@ import { Sequelize, Model, DataTypes, ModelCtor } from 'sequelize';
 export const UserFactory = (sequelize: Sequelize) => {
   class User extends Model {
     static associate(models: Record<string, ModelCtor<Model>>) {
-      this.belongsTo(models.User, { targetKey: 'id', foreignKey: 'successorId' });
-      this.belongsTo(models.User, { targetKey: '', foreignKey: '' });
+      this.belongsTo(models.User, { as: 'successor', targetKey: 'id', foreignKey: 'successorId' });
+      this.hasMany(models.Post, { as: 'posts' });
+      this.hasOne(models.User, { as: 'predecessor' });
     }
   }
 
