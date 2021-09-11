@@ -27,7 +27,7 @@ generatorHandler({
         : parseEnvValue(options.generator.output);
 
     try {
-      const plop = nodePlop(path.join(__dirname, '../.plop/plopfile.js'), { destBasePath: outputDir, force: true });
+      const plop = nodePlop(path.join(__dirname, '../plop/plopfile.js'), { destBasePath: outputDir, force: true });
       const utilsGenerator = plop.getGenerator('utils');
       const indexGenerator = plop.getGenerator('index.ts');
       const modelGenerator = plop.getGenerator('Model.ts');

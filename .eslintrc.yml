@@ -4,6 +4,7 @@ env:
 root: true
 ignorePatterns:
   - dist
+  - plop
   - prisma
 plugins:
   - jest

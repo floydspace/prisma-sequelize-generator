@@ -5,7 +5,7 @@
   "license": "MIT",
   "files": [
     "dist",
-    ".plop"
+    "plop"
   ],
   "description": "Sequelize models generator for prisma schema",
   "author": {
