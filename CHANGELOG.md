@@ -1,3 +1,12 @@
+## [1.0.0-beta.1](https://github.com/floydspace/prisma-sequelize-generator/compare/v1.0.0-alpha.3...v1.0.0-beta.1) (2021-09-11)
+
+
+### Features
+
+* accept sequelize options on create instance ([d509e78](https://github.com/floydspace/prisma-sequelize-generator/commit/d509e7867c26d2fbf5ad7eacdd5c5c8c85d5d8e3))
+* cleanup generated file structure, improve model initialization ([f1b5730](https://github.com/floydspace/prisma-sequelize-generator/commit/f1b5730dd5e09695c7b6bfb15b93625ac6479271))
+* support enums ([69e1d96](https://github.com/floydspace/prisma-sequelize-generator/commit/69e1d969016ff037152e5f611ba621ba73023c10))
+
 ## [1.0.0-alpha.3](https://github.com/floydspace/prisma-sequelize-generator/compare/v1.0.0-alpha.2...v1.0.0-alpha.3) (2021-09-10)
 
 
