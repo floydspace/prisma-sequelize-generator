@@ -12,7 +12,7 @@ A generator, which takes a Prisma 2 `schema.prisma` and generates Sequelize Mode
 
 ## Getting Started
 
-**1. Install**
+### 1. Install
 
 npm:
 
@@ -26,7 +26,7 @@ yarn:
 yarn add -D prisma-sequelize-generator
 ```
 
-**2. Add the generator to the schema**
+### 2. Add the generator to the schema
 
 ```prisma
 generator client {
@@ -43,13 +43,29 @@ generator client {
 }
 ```
 
-**3. Run generation**
+### 3. Run generation
 
 prisma:
 
 ```shell
 prisma generate
 ```
+
+### 3. Use Sequelize Models to interact with your database
+
+```typescript
+import { createSequelizeInstance } from './prisma/sequelize';
+
+const { sequelize, models } = new createSequelizeInstance({
+  ssl: true,
+  dialectOptions: {
+    connectTimeout: 1000,
+  },
+});
+// use `sequelize` instance and `models` in your application to read and write data in your DB
+```
+
+No need to set a connection string, it is set form the `datasource` configuration in your `schema.prisma` by default.
 
 ## Supported Node Versions
 
