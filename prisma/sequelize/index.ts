@@ -18,7 +18,7 @@ const databaseUrl = config.datasource.url.fromEnvVar
   ? env[config.datasource.url.fromEnvVar]
   : config.datasource.url.value;
 
-export const createSequelizeInstance = async (options?: Options) => {
+export const createSequelizeInstance = (options?: Options) => {
   const withDefaults = mergeDeepRight({
     define: {
       freezeTableName: true,
@@ -27,13 +27,16 @@ export const createSequelizeInstance = async (options?: Options) => {
 
   const sequelize = new Sequelize(databaseUrl, withDefaults(options ?? {}));
 
+  // First initialize all models
   Object.keys(models).forEach((model) => {
     models[model].initialize?.(sequelize);
+  });
+
+  // Then apply associations
+  Object.keys(models).forEach((model) => {
     models[model].associate?.(models);
     models[model].hooks?.(models);
   });
-
-  await sequelize.authenticate();
 
   return {
     sequelize,

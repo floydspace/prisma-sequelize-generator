@@ -56,7 +56,7 @@ prisma generate
 ```typescript
 import { createSequelizeInstance } from './prisma/sequelize';
 
-const { sequelize, models } = new createSequelizeInstance({
+const { sequelize, models } = createSequelizeInstance({
   ssl: true,
   dialectOptions: {
     connectTimeout: 1000,
