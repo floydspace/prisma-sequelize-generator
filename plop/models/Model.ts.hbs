@@ -1,0 +1,44 @@
+import { Sequelize, Model, DataTypes, ModelCtor } from 'sequelize';
+
+export class {{model.name}} extends Model {
+  static initialize(sequelize: Sequelize) {
+    this.init(
+      {
+      {{#each scalarFields}}
+        {{name}}: {
+          type: {{#if isList}}DataTypes.ARRAY(DataTypes.{{type}}){{else}}DataTypes.{{{type}}}{{/if}},{{#if (eq allowNull false)}}
+          allowNull: {{allowNull}},{{/if}}{{#if (and hasDefaultValue (eq isAutoincrement false))}}
+          defaultValue: '{{default}}',{{/if}}{{#if isId}}
+          primaryKey: {{isId}},{{/if}}{{#if isAutoincrement}}
+          autoIncrement: {{isAutoincrement}},{{/if}}{{#if isUnique}}
+          unique: {{isUnique}},{{/if}}
+        },
+      {{/each}}
+      },
+      {
+        sequelize,
+        modelName: '{{model.name}}',
+        tableName: '{{#if model.dbName}}{{model.dbName}}{{else}}{{model.name}}{{/if}}',
+        timestamps: {{or (or hasCreatedAt hasUpdatedAt) hasDeletedAt}},{{#if (or (or hasCreatedAt hasUpdatedAt) hasDeletedAt)}}{{#if (eq hasCreatedAt false)}}
+        createdAt: false,{{/if}}{{#if (eq hasUpdatedAt false)}}
+        updatedAt: false,{{/if}}{{!-- {{#if (eq hasDeletedAt false)}}
+        deletedAt: false,{{/if}} --}}{{#if hasDeletedAt}}
+        paranoid: true,{{/if}}{{/if}}
+      }
+    );
+  }
+
+  {{#if (or belongsToFields (or hasManyFields hasOneFields))}}
+  static associate(models: Record<string, ModelCtor<Model>>) {
+  {{#each belongsToFields}}
+    this.belongsTo(models.{{name}}, { as: '{{as}}', targetKey: '{{targetKey}}', foreignKey: '{{foreignKey}}' });
+  {{/each}}
+  {{#each hasManyFields}}
+    this.hasMany(models.{{name}}, { as: '{{as}}' });
+  {{/each}}
+  {{#each hasOneFields}}
+    this.hasOne(models.{{name}}, { as: '{{as}}' });
+  {{/each}}
+  }
+  {{/if}}
+}

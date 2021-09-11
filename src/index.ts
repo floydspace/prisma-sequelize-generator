@@ -12,7 +12,7 @@ import { PrismaTypeToSequelizeType } from './mappers';
 generatorHandler({
   onManifest() {
     return {
-      defaultOutput: './models',
+      defaultOutput: './sequelize',
       prettyName: 'Sequelize Models',
     };
   },

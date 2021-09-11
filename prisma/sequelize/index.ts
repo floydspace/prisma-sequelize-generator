@@ -5,7 +5,7 @@ import path from 'path';
 import { findSync } from './utils';
 import config from './config.json';
 
-const dirname = findSync(process.cwd(), ['{{relativeOutputDir}}', '{{slsRelativeOutputDir}}'], ['d'], ['d'], 1)[0] || __dirname;
+const dirname = findSync(process.cwd(), ['prisma/sequelize', 'sequelize'], ['d'], ['d'], 1)[0] || __dirname;
 
 import * as models from './models';
 

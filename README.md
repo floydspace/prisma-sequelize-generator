@@ -34,7 +34,7 @@ generator client {
 }
 ```
 
-With a custom output path (default=./models)
+With a custom output path (default=./sequelize)
 
 ```prisma
 generator client {

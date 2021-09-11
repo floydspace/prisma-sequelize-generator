@@ -33,8 +33,18 @@ module.exports = function (plop) {
     actions: () => [
       {
         type: 'add',
+        path: 'models/index.ts',
+        templateFile: path.join(__dirname, './models/index.ts.hbs'),
+      },
+      {
+        type: 'add',
         path: 'index.ts',
         templateFile: path.join(__dirname, './index.ts.hbs'),
+      },
+      {
+        type: 'add',
+        path: 'config.json',
+        template: '{{{config}}}',
       },
     ],
   });
@@ -43,8 +53,8 @@ module.exports = function (plop) {
     actions: () => [
       {
         type: 'add',
-        path: '{{model.name}}.ts',
-        templateFile: path.join(__dirname, './Model.ts.hbs'),
+        path: 'models/{{model.name}}.ts',
+        templateFile: path.join(__dirname, './models/Model.ts.hbs'),
       },
     ],
   });
