@@ -21,8 +21,9 @@ export const {{model.name}}Factory = (sequelize: Sequelize) => {
     {
     {{#each scalarFields}}
       {{name}}: {
-        type: {{#if isList}}DataTypes.ARRAY(DataTypes.{{type}}){{else}}DataTypes.{{type}}{{/if}},{{#if (eq allowNull false)}}
-        allowNull: {{allowNull}},{{/if}}{{#if isId}}
+        type: {{#if isList}}DataTypes.ARRAY(DataTypes.{{type}}){{else}}DataTypes.{{{type}}}{{/if}},{{#if (eq allowNull false)}}
+        allowNull: {{allowNull}},{{/if}}{{#if (and hasDefaultValue (eq isAutoincrement false))}}
+        defaultValue: '{{default}}',{{/if}}{{#if isId}}
         primaryKey: {{isId}},{{/if}}{{#if isAutoincrement}}
         autoIncrement: {{isAutoincrement}},{{/if}}{{#if isUnique}}
         unique: {{isUnique}},{{/if}}

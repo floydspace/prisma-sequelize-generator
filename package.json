@@ -30,7 +30,8 @@
   "dependencies": {
     "@prisma/generator-helper": "^2.29.1",
     "@prisma/sdk": "^2.29.1",
-    "node-plop": "^0.26.2"
+    "node-plop": "^0.26.2",
+    "ramda": "^0.27.1"
   },
   "devDependencies": {
     "@commitlint/cli": "^13.1.0",
@@ -43,6 +44,7 @@
     "@semantic-release/release-notes-generator": "^9.0.3",
     "@types/jest": "^27.0.1",
     "@types/node": "^14.17.9",
+    "@types/ramda": "^0.27.44",
     "@typescript-eslint/eslint-plugin": "^4.29.2",
     "@typescript-eslint/parser": "^4.29.2",
     "eslint": "^7.32.0",

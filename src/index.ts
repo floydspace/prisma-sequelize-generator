@@ -1,3 +1,4 @@
+import { indexBy, prop } from 'ramda';
 import { generatorHandler } from '@prisma/generator-helper';
 import { parseEnvValue, getEnvPaths } from '@prisma/sdk';
 import nodePlop from 'node-plop';
@@ -51,6 +52,8 @@ generatorHandler({
       const relativeOutputDir = path.relative(process.cwd(), outputDir);
       const slsRelativeOutputDir = path.relative(process.cwd(), outputDir).split(path.sep).slice(1).join(path.sep);
 
+      const enumIndex = indexBy(prop('name'), options.dmmf.datamodel.enums ?? []);
+
       await Promise.all([
         utilsGenerator.runActions({}),
         indexGenerator.runActions({
@@ -64,19 +67,25 @@ generatorHandler({
           return modelGenerator.runActions({
             model,
             scalarFields: model.fields
-              .filter((field) => field.kind === 'scalar')
+              .filter((field) => ['scalar', 'enum'].includes(field.kind))
               .filter((field) => !['createdAt', 'updatedAt', 'deletedAt'].includes(field.name))
               .map((field) => ({
                 ...field,
                 name: field.name,
-                type: PrismaTypeToSequelizeType[field.type],
+                type:
+                  field.kind === 'scalar'
+                    ? PrismaTypeToSequelizeType[field.type]
+                    : `ENUM(${enumIndex[field.type].values
+                        .map(prop('name'))
+                        .map((n) => `'${n}'`)
+                        .join(', ')})`,
                 allowNull: !field.isRequired,
                 isAutoincrement:
                   field.hasDefaultValue && typeof field.default === 'object' && field.default.name === 'autoincrement',
               })),
             belongsToFields: model.fields
               .filter((field) => field.kind === 'object')
-              .filter((field) => !field.isList && field.relationToFields!.length)
+              .filter((field) => !field.isList && field.relationToFields?.length)
               .map((field) => ({
                 as: field.name,
                 name: field.type,

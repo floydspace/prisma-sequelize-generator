@@ -34,6 +34,11 @@ export const UserFactory = (sequelize: Sequelize) => {
       successorId: {
         type: DataTypes.INTEGER,
       },
+      role: {
+        type: DataTypes.ENUM('USER', 'ADMIN'),
+        allowNull: false,
+        defaultValue: 'USER',
+      },
       keywords: {
         type: DataTypes.ARRAY(DataTypes.STRING),
         allowNull: false,
