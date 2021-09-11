@@ -1,3 +1,10 @@
+## [1.0.0-beta.3](https://github.com/floydspace/prisma-sequelize-generator/compare/v1.0.0-beta.2...v1.0.0-beta.3) (2021-09-11)
+
+
+### Bug Fixes
+
+* broken .env resolving ([93ff453](https://github.com/floydspace/prisma-sequelize-generator/commit/93ff45328479d4e998371a82cdef3ee46ff9c91f))
+
 ## [1.0.0-beta.2](https://github.com/floydspace/prisma-sequelize-generator/compare/v1.0.0-beta.1...v1.0.0-beta.2) (2021-09-11)
 
 
