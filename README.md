@@ -1,4 +1,4 @@
-# Prisma Sequelize Generator
+# 🏳️‍🌈⃤ Prisma Sequelize Generator
 
 A generator, which takes a Prisma 2 `schema.prisma` and generates Sequelize Models.
 
