@@ -49,8 +49,8 @@ generatorHandler({
         // datasourceNames: options.datasources.map((d) => d.name),
         datasource: options.datasources[0],
       };
-      const relativeOutputDir = path.relative(process.cwd(), outputDir);
-      const slsRelativeOutputDir = path.relative(process.cwd(), outputDir).split(path.sep).slice(1).join(path.sep);
+      // const relativeOutputDir = path.relative(process.cwd(), outputDir);
+      // const slsRelativeOutputDir = path.relative(process.cwd(), outputDir).split(path.sep).slice(1).join(path.sep);
 
       const enumIndex = indexBy(prop('name'), options.dmmf.datamodel.enums ?? []);
 
@@ -59,8 +59,6 @@ generatorHandler({
         indexGenerator.runActions({
           models: options.dmmf.datamodel.models,
           config: JSON.stringify(config, null, 2),
-          relativeOutputDir,
-          slsRelativeOutputDir,
         }),
         ...options.dmmf.datamodel.models.map((model) => {
           const attributes = model.fields.map((field) => field.name);

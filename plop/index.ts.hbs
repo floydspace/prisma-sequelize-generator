@@ -7,11 +7,9 @@ import { findSync } from './utils';
 import config from './config.json';
 import * as models from './models';
 
-const dirname = findSync(process.cwd(), ['{{relativeOutputDir}}', '{{slsRelativeOutputDir}}'], ['d'], ['d'], 1)[0] || __dirname;
-
 const loadedEnv = tryLoadEnvs({
-  rootEnvPath: config.relativeEnvPaths.rootEnvPath && path.resolve(dirname, config.relativeEnvPaths.rootEnvPath),
-  schemaEnvPath: config.relativeEnvPaths.schemaEnvPath && path.resolve(dirname, config.relativeEnvPaths.schemaEnvPath),
+  rootEnvPath: config.relativeEnvPaths.rootEnvPath && path.resolve(__dirname, config.relativeEnvPaths.rootEnvPath),
+  schemaEnvPath: config.relativeEnvPaths.schemaEnvPath && path.resolve(__dirname, config.relativeEnvPaths.schemaEnvPath),
 });
 const env = { ...(loadedEnv ? loadedEnv.parsed : {}), ...process.env };
 const databaseUrl = config.datasource.url.fromEnvVar
