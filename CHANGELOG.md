@@ -1,3 +1,10 @@
+## [1.0.0-beta.2](https://github.com/floydspace/prisma-sequelize-generator/compare/v1.0.0-beta.1...v1.0.0-beta.2) (2021-09-11)
+
+
+### Bug Fixes
+
+* bug in models associations, make factory synchronous, fix readme ([b8f4b2d](https://github.com/floydspace/prisma-sequelize-generator/commit/b8f4b2df687486ddfa429ade20df35121aa780b1))
+
 ## [1.0.0-beta.1](https://github.com/floydspace/prisma-sequelize-generator/compare/v1.0.0-alpha.3...v1.0.0-beta.1) (2021-09-11)
 
 

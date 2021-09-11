@@ -1,6 +1,6 @@
 {
   "name": "prisma-sequelize-generator",
-  "version": "1.0.0-beta.1",
+  "version": "1.0.0-beta.2",
   "main": "dist/generator.js",
   "license": "MIT",
   "files": [
