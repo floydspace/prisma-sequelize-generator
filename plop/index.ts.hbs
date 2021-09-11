@@ -1,13 +1,13 @@
-import { Sequelize } from 'sequelize';
+import { Options, Sequelize } from 'sequelize';
 import { tryLoadEnvs } from '@prisma/sdk';
+import { mergeDeepRight } from 'ramda';
 import path from 'path';
 
 import { findSync } from './utils';
 import config from './config.json';
+import * as models from './models';
 
 const dirname = findSync(process.cwd(), ['{{relativeOutputDir}}', '{{slsRelativeOutputDir}}'], ['d'], ['d'], 1)[0] || __dirname;
-
-import * as models from './models';
 
 const loadedEnv = tryLoadEnvs({
   rootEnvPath: config.relativeEnvPaths.rootEnvPath && path.resolve(dirname, config.relativeEnvPaths.rootEnvPath),
@@ -18,13 +18,14 @@ const databaseUrl = config.datasource.url.fromEnvVar
   ? env[config.datasource.url.fromEnvVar]
   : config.datasource.url.value;
 
-export const createInstance = async () => {
-  const sequelize = new Sequelize(databaseUrl, {
-    ssl: true,
+export const createSequelizeInstance = async (options?: Options) => {
+  const withDefaults = mergeDeepRight({
     define: {
       freezeTableName: true,
     },
   });
+
+  const sequelize = new Sequelize(databaseUrl, withDefaults(options ?? {}));
 
   Object.keys(models).forEach((model) => {
     models[model].initialize?.(sequelize);
