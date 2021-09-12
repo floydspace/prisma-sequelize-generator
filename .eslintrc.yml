@@ -6,17 +6,20 @@ ignorePatterns:
   - dist
   - plop
   - prisma
+  - jest.config.js
 plugins:
   - jest
   - '@typescript-eslint'
 parserOptions:
   ecmaVersion: 9
   sourceType: module
+  project: ./tsconfig.json
 extends:
   - eslint:recommended
   - plugin:@typescript-eslint/eslint-recommended
   - plugin:@typescript-eslint/recommended
   - plugin:jest/recommended
+  - plugin:jest/style
   - plugin:eslint-comments/recommended
   - prettier
 rules:

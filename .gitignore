@@ -48,3 +48,6 @@ dist/
 
 # Prisma related files
 dmmf.json
+
+# Test artifacts
+.testArtifacts

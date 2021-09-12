@@ -14,7 +14,8 @@
     "strictFunctionTypes": true
   },
   "include": [
-    "src"
+    "src/**/*.ts",
+    "tests/**/*.ts"
   ],
   "exclude": [
     "node_modules"
