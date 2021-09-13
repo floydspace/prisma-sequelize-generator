@@ -30,6 +30,7 @@
   "dependencies": {
     "@prisma/generator-helper": "^2.29.1",
     "@prisma/sdk": "^2.29.1",
+    "morphism": "^1.12.3",
     "node-plop": "^0.26.2",
     "ramda": "^0.27.1"
   },
