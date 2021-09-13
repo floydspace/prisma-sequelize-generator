@@ -1,5 +1,5 @@
 generator models {
-  provider = "node ./dist/generator.js"
+  provider = "node ./dist/cli.js"
 }
 
 datasource db {

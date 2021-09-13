@@ -13,7 +13,6 @@ plugins:
 parserOptions:
   ecmaVersion: 9
   sourceType: module
-  project: ./tsconfig.json
 extends:
   - eslint:recommended
   - plugin:@typescript-eslint/eslint-recommended

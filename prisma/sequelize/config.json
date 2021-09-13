@@ -3,7 +3,7 @@
     "name": "models",
     "provider": {
       "fromEnvVar": null,
-      "value": "node ./dist/generator.js"
+      "value": "node ./dist/cli.js"
     },
     "output": {
       "value": "/Users/victor/Projects/_own/prisma-sequelize-generator/prisma/sequelize",

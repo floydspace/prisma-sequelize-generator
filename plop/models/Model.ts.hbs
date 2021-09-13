@@ -1,6 +1,6 @@
 import { Sequelize, Model, DataTypes, ModelCtor } from 'sequelize';
 
-export class {{model.name}} extends Model {
+export class {{name}} extends Model {
   static initialize(sequelize: Sequelize) {
     this.init(
       {
@@ -17,8 +17,8 @@ export class {{model.name}} extends Model {
       },
       {
         sequelize,
-        modelName: '{{model.name}}',
-        tableName: '{{#if model.dbName}}{{model.dbName}}{{else}}{{model.name}}{{/if}}',
+        modelName: '{{name}}',
+        tableName: '{{#if dbName}}{{dbName}}{{else}}{{name}}{{/if}}',
         timestamps: {{or (or hasCreatedAt hasUpdatedAt) hasDeletedAt}},{{#if (or (or hasCreatedAt hasUpdatedAt) hasDeletedAt)}}{{#if (eq hasCreatedAt false)}}
         createdAt: false,{{/if}}{{#if (eq hasUpdatedAt false)}}
         updatedAt: false,{{/if}}{{!-- {{#if (eq hasDeletedAt false)}}
