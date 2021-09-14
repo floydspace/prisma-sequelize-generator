@@ -1,4 +1,4 @@
-import { morphism, Schema } from 'morphism';
+import { morphism, Schema, createSchema } from 'morphism';
 import R from 'ramda';
 
 import { included, isNotEmpty, notIncluded } from './helpers';
@@ -14,20 +14,23 @@ export function transformDMMF(dmmf: DMMF.Document) {
       .map((n) => `'${n}'`)
       .join(', ')})`;
 
-  const scalarMorphism = morphism<Schema<ScalarProperties, DMMF.Field>>({
-    isList: 'isList',
-    hasDefaultValue: 'hasDefaultValue',
-    default: 'default',
-    isId: 'isId',
-    isUnique: 'isUnique',
-    fieldName: 'name',
-    type: (field: DMMF.Field) =>
-      field.kind === 'scalar'
-        ? R.prop(field.type, PrismaTypeToSequelizeType)
-        : enumValuesToString(R.prop(field.type, enumIndex)),
-    allowNull: { path: 'isRequired', fn: R.not },
-    isAutoincrement: R.allPass([R.prop('hasDefaultValue'), R.pathEq(['default', 'name'], 'autoincrement')]),
-  });
+  const scalarSchema = createSchema<ScalarProperties, DMMF.Field>(
+    {
+      isList: 'isList',
+      hasDefaultValue: 'hasDefaultValue',
+      default: 'default',
+      isId: 'isId',
+      isUnique: 'isUnique',
+      fieldName: 'name',
+      type: (field: DMMF.Field) =>
+        field.kind === 'scalar'
+          ? R.prop(field.type, PrismaTypeToSequelizeType)
+          : enumValuesToString(R.prop(field.type, enumIndex)),
+      allowNull: { path: 'isRequired', fn: R.not },
+      isAutoincrement: R.allPass([R.prop('hasDefaultValue'), R.pathEq(['default', 'name'], 'autoincrement')]),
+    },
+    { undefinedValues: { strip: true } }
+  );
 
   const relationMorphism = morphism<Schema<RelationProperties, DMMF.Field>>({
     as: 'name',
@@ -48,7 +51,7 @@ export function transformDMMF(dmmf: DMMF.Document) {
             R.propSatisfies(notIncluded(['createdAt', 'updatedAt', 'deletedAt']), 'name'),
           ]),
           fields
-        ).map(scalarMorphism),
+        ).map(morphism(scalarSchema)),
     },
     belongsToFields: {
       path: 'fields',
