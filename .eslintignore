@@ -1,0 +1,5 @@
+coverage/*
+dist/*
+plop/*
+prisma/*
+jest.config.js

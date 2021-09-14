@@ -70,7 +70,8 @@
     "prepublishOnly": "npm run build",
     "pretest": "npm run lint",
     "test": "jest --passWithNoTests",
-    "coverage": "npm run test -- --coverage",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
     "lint": "eslint .",
     "prepare": "husky install"
   },

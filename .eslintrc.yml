@@ -2,11 +2,6 @@ env:
   node: true
   jest: true
 root: true
-ignorePatterns:
-  - dist
-  - plop
-  - prisma
-  - jest.config.js
 plugins:
   - jest
   - '@typescript-eslint'
