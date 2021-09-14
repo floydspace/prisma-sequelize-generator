@@ -28,7 +28,7 @@ generatorHandler({
 
     try {
       const plop = nodePlop(path.join(__dirname, '../plop/plopfile.js'), { destBasePath: outputDir, force: true });
-      const utilsGenerator = plop.getGenerator('utils');
+      // const utilsGenerator = plop.getGenerator('utils');
       const indexGenerator = plop.getGenerator('index.ts');
       const modelGenerator = plop.getGenerator('Model.ts');
 
@@ -54,7 +54,7 @@ generatorHandler({
       const { models } = transformDMMF(options.dmmf);
 
       await Promise.all([
-        utilsGenerator.runActions({}),
+        // utilsGenerator.runActions({}),
         indexGenerator.runActions({ models, config: JSON.stringify(config, null, 2) }),
         ...models.map((model) => modelGenerator.runActions(model)),
       ]);

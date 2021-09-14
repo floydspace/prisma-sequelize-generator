@@ -3,7 +3,6 @@ import { tryLoadEnvs } from '@prisma/sdk';
 import { mergeDeepRight } from 'ramda';
 import path from 'path';
 
-import { findSync } from './utils';
 import config from './config.json';
 import * as models from './models';
 
