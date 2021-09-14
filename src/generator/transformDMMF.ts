@@ -20,7 +20,7 @@ export function transformDMMF(dmmf: DMMF.Document) {
     default: 'default',
     isId: 'isId',
     isUnique: 'isUnique',
-    name: 'name',
+    fieldName: 'name',
     type: (field: DMMF.Field) =>
       field.kind === 'scalar'
         ? R.prop(field.type, PrismaTypeToSequelizeType)
@@ -37,7 +37,7 @@ export function transformDMMF(dmmf: DMMF.Document) {
   });
 
   const modelMorphism = morphism<Schema<ModelProperties, DMMF.Model>>({
-    name: 'name',
+    modelName: 'name',
     dbName: 'dbName',
     scalarFields: {
       path: 'fields',

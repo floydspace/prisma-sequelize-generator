@@ -53,7 +53,7 @@ module.exports = function (plop) {
     actions: () => [
       {
         type: 'add',
-        path: 'models/{{name}}.ts',
+        path: 'models/{{modelName}}.ts',
         templateFile: path.join(__dirname, './models/Model.ts.hbs'),
       },
     ],

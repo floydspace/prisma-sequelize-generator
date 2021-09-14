@@ -1,11 +1,11 @@
 import { Sequelize, Model, DataTypes, ModelCtor } from 'sequelize';
 
-export class {{name}} extends Model {
+export class {{modelName}} extends Model {
   static initialize(sequelize: Sequelize) {
     this.init(
       {
       {{#each scalarFields}}
-        {{name}}: {
+        {{fieldName}}: {
           type: {{#if isList}}DataTypes.ARRAY(DataTypes.{{type}}){{else}}DataTypes.{{{type}}}{{/if}},{{#if (eq allowNull false)}}
           allowNull: {{allowNull}},{{/if}}{{#if (and hasDefaultValue (eq isAutoincrement false))}}
           defaultValue: '{{default}}',{{/if}}{{#if isId}}
@@ -17,8 +17,8 @@ export class {{name}} extends Model {
       },
       {
         sequelize,
-        modelName: '{{name}}',
-        tableName: '{{#if dbName}}{{dbName}}{{else}}{{name}}{{/if}}',
+        modelName: '{{modelName}}',
+        tableName: '{{#if dbName}}{{dbName}}{{else}}{{modelName}}{{/if}}',
         timestamps: {{or (or hasCreatedAt hasUpdatedAt) hasDeletedAt}},{{#if (or (or hasCreatedAt hasUpdatedAt) hasDeletedAt)}}{{#if (eq hasCreatedAt false)}}
         createdAt: false,{{/if}}{{#if (eq hasUpdatedAt false)}}
         updatedAt: false,{{/if}}{{!-- {{#if (eq hasDeletedAt false)}}

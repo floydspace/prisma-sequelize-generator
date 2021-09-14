@@ -9,7 +9,7 @@ export const PrismaTypeToSequelizeType: Record<string, string> = {
 };
 
 export interface ModelProperties {
-  name: string;
+  modelName: string;
   dbName: string;
   scalarFields: ScalarProperties[];
   belongsToFields: RelationProperties[];
@@ -33,7 +33,7 @@ export interface ScalarProperties {
   default: any;
   isId: boolean;
   isUnique: boolean;
-  name: string;
+  fieldName: string;
   type: string;
   allowNull: boolean;
   isAutoincrement: boolean;
