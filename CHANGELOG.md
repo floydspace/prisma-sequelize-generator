@@ -1,3 +1,10 @@
+## [1.0.0-beta.4](https://github.com/floydspace/prisma-sequelize-generator/compare/v1.0.0-beta.3...v1.0.0-beta.4) (2021-09-14)
+
+
+### Bug Fixes
+
+* do not generate unnecessary code ([e5fe2ac](https://github.com/floydspace/prisma-sequelize-generator/commit/e5fe2ac787973dc99d18756cb9a9b3ae5e687cda))
+
 ## [1.0.0-beta.3](https://github.com/floydspace/prisma-sequelize-generator/compare/v1.0.0-beta.2...v1.0.0-beta.3) (2021-09-11)
 
 
