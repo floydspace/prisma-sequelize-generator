@@ -55,6 +55,7 @@
     "eslint-plugin-jest": "^24.4.0",
     "husky": "^7.0.0",
     "jest": "^27.0.6",
+    "lint-staged": "^11.1.2",
     "prettier": "^2.3.2",
     "prisma": "^2.29.1",
     "semantic-release": "^17.4.5",
@@ -67,7 +68,6 @@
     "clean": "rm -rf ./dist",
     "build": "npm run clean && tsc",
     "prepublishOnly": "npm run build",
-    "precommit": "npm run test",
     "pretest": "npm run lint",
     "test": "jest --passWithNoTests",
     "coverage": "npm run test -- --coverage",
@@ -79,5 +79,13 @@
   },
   "publishConfig": {
     "access": "public"
+  },
+  "lint-staged": {
+    "*.ts": [
+      "eslint --cache --fix",
+      "prettier --write",
+      "jest --bail --findRelatedTests"
+    ],
+    "*.md": "prettier --write"
   }
 }
