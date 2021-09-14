@@ -55,10 +55,7 @@ generatorHandler({
 
       await Promise.all([
         utilsGenerator.runActions({}),
-        indexGenerator.runActions({
-          models,
-          config: JSON.stringify(config, null, 2),
-        }),
+        indexGenerator.runActions({ models, config: JSON.stringify(config, null, 2) }),
         ...models.map((model) => modelGenerator.runActions(model)),
       ]);
     } catch (e) {

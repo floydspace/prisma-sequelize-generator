@@ -1,12 +1,18 @@
 import { morphism, Schema } from 'morphism';
-import { compose, includes, indexBy, map, not, prop } from 'ramda';
+import R from 'ramda';
 
+import { included, isNotEmpty, notIncluded } from './helpers';
 import { ModelProperties, PrismaTypeToSequelizeType, RelationProperties, ScalarProperties } from './properties';
 
 import type { DMMF } from '@prisma/generator-helper';
 
 export function transformDMMF(dmmf: DMMF.Document) {
-  const enumIndex = indexBy(prop('name'), dmmf.datamodel.enums ?? []);
+  const enumIndex = R.indexBy(R.prop('name'), dmmf.datamodel.enums ?? []);
+  const enumValuesToString = (e: DMMF.DatamodelEnum) =>
+    `ENUM(${e.values
+      .map(R.prop('name'))
+      .map((n) => `'${n}'`)
+      .join(', ')})`;
 
   const scalarMorphism = morphism<Schema<ScalarProperties, DMMF.Field>>({
     isList: 'isList',
@@ -17,14 +23,10 @@ export function transformDMMF(dmmf: DMMF.Document) {
     name: 'name',
     type: (field: DMMF.Field) =>
       field.kind === 'scalar'
-        ? PrismaTypeToSequelizeType[field.type]
-        : `ENUM(${enumIndex[field.type].values
-            .map(prop('name'))
-            .map((n) => `'${n}'`)
-            .join(', ')})`,
-    allowNull: { path: 'isRequired', fn: not },
-    isAutoincrement: (field: DMMF.Field) =>
-      field.hasDefaultValue && typeof field.default === 'object' && field.default.name === 'autoincrement',
+        ? R.prop(field.type, PrismaTypeToSequelizeType)
+        : enumValuesToString(R.prop(field.type, enumIndex)),
+    allowNull: { path: 'isRequired', fn: R.not },
+    isAutoincrement: R.allPass([R.prop('hasDefaultValue'), R.pathEq(['default', 'name'], 'autoincrement')]),
   });
 
   const relationMorphism = morphism<Schema<RelationProperties, DMMF.Field>>({
@@ -40,38 +42,46 @@ export function transformDMMF(dmmf: DMMF.Document) {
     scalarFields: {
       path: 'fields',
       fn: (fields: DMMF.Field[]) =>
-        fields
-          .filter((field) => ['scalar', 'enum'].includes(field.kind))
-          .filter((field) => !['createdAt', 'updatedAt', 'deletedAt'].includes(field.name))
-          .map(scalarMorphism),
+        R.filter(
+          R.allPass([
+            R.propSatisfies(included(['scalar', 'enum']), 'kind'),
+            R.propSatisfies(notIncluded(['createdAt', 'updatedAt', 'deletedAt']), 'name'),
+          ]),
+          fields
+        ).map(scalarMorphism),
     },
     belongsToFields: {
       path: 'fields',
       fn: (fields: DMMF.Field[]) =>
-        fields
-          .filter((field) => field.kind === 'object')
-          .filter((field) => !field.isList && field.relationToFields?.length)
-          .map(relationMorphism),
+        R.filter(
+          R.allPass([
+            R.propEq('kind', 'object'),
+            R.propSatisfies(R.not, 'isList'),
+            R.propSatisfies(isNotEmpty, 'relationToFields'),
+          ]),
+          fields
+        ).map(relationMorphism),
     },
     hasOneFields: {
       path: 'fields',
       fn: (fields: DMMF.Field[]) =>
-        fields
-          .filter((field) => field.kind === 'object')
-          .filter((field) => !field.isList && !field.relationToFields?.length)
-          .map(relationMorphism),
+        R.filter(
+          R.allPass([
+            R.propEq('kind', 'object'),
+            R.propSatisfies(R.not, 'isList'),
+            R.propSatisfies(R.isEmpty, 'relationToFields'),
+          ]),
+          fields
+        ).map(relationMorphism),
     },
     hasManyFields: {
       path: 'fields',
       fn: (fields: DMMF.Field[]) =>
-        fields
-          .filter((field) => field.kind === 'object')
-          .filter((field) => field.isList)
-          .map(relationMorphism),
+        R.filter(R.allPass([R.propEq('kind', 'object'), R.prop('isList')]), fields).map(relationMorphism),
     },
-    hasCreatedAt: { path: 'fields', fn: compose(includes('createdAt'), map(prop('name'))) },
-    hasUpdatedAt: { path: 'fields', fn: compose(includes('updatedAt'), map(prop('name'))) },
-    hasDeletedAt: { path: 'fields', fn: compose(includes('deletedAt'), map(prop('name'))) },
+    hasCreatedAt: { path: 'fields', fn: R.compose(R.includes('createdAt'), R.map(R.prop('name'))) },
+    hasUpdatedAt: { path: 'fields', fn: R.compose(R.includes('updatedAt'), R.map(R.prop('name'))) },
+    hasDeletedAt: { path: 'fields', fn: R.compose(R.includes('deletedAt'), R.map(R.prop('name'))) },
   });
 
   const transformMorphism = morphism<Schema<{ models: ModelProperties[] }, DMMF.Datamodel>>({
