@@ -1,0 +1,9 @@
+{{#each models}}
+const { {{modelName}} } = require('./{{modelName}}');
+{{/each}}
+
+module.exports = {
+  {{#each models}}
+  {{modelName}},
+  {{/each}}
+};

@@ -1,5 +1,6 @@
 generator models {
-  provider = "node ./dist/cli.js"
+  provider     = "node ./dist/cli.js"
+  outputFormat = "typescript"
 }
 
 datasource db {

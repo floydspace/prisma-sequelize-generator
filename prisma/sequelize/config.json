@@ -9,7 +9,9 @@
       "value": "/Users/victor/Projects/_own/prisma-sequelize-generator/prisma/sequelize",
       "fromEnvVar": "null"
     },
-    "config": {},
+    "config": {
+      "outputFormat": "typescript"
+    },
     "binaryTargets": [],
     "previewFeatures": []
   },

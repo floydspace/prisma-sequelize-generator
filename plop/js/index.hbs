@@ -1,0 +1,42 @@
+const { Sequelize } = require('sequelize');
+const { tryLoadEnvs } = require('@prisma/sdk');
+const { mergeDeepRight } = require('ramda');
+const path = require('path');
+
+const config = require('./config.json');
+const models = require('./models');
+
+const loadedEnv = tryLoadEnvs({
+  rootEnvPath: config.relativeEnvPaths.rootEnvPath && path.resolve(__dirname, config.relativeEnvPaths.rootEnvPath),
+  schemaEnvPath: config.relativeEnvPaths.schemaEnvPath && path.resolve(__dirname, config.relativeEnvPaths.schemaEnvPath),
+});
+const env = { ...(loadedEnv ? loadedEnv.parsed : {}), ...process.env };
+const databaseUrl = config.datasource.url.fromEnvVar
+  ? env[config.datasource.url.fromEnvVar]
+  : config.datasource.url.value;
+
+module.exports.createSequelizeInstance = (options) => {
+  const withDefaults = mergeDeepRight({
+    define: {
+      freezeTableName: true,
+    },
+  });
+
+  const sequelize = new Sequelize(databaseUrl, withDefaults(options ?? {}));
+
+  // First initialize all models
+  Object.keys(models).forEach((model) => {
+    models[model].initialize?.(sequelize);
+  });
+
+  // Then apply associations
+  Object.keys(models).forEach((model) => {
+    models[model].associate?.(models);
+    models[model].hooks?.(models);
+  });
+
+  return {
+    sequelize,
+    models,
+  };
+};

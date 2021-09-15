@@ -18,28 +18,28 @@ module.exports = function (plop) {
     actions: () => [
       {
         type: 'add',
-        path: 'utils/find.ts',
-        templateFile: path.join(__dirname, './utils/find.ts.hbs'),
+        path: 'utils/find.{{outputFormat}}',
+        templateFile: path.join(__dirname, './{{outputFormat}}/utils/find.hbs'),
       },
       {
         type: 'add',
-        path: 'utils/index.ts',
-        templateFile: path.join(__dirname, './utils/index.ts.hbs'),
+        path: 'utils/index.{{outputFormat}}',
+        templateFile: path.join(__dirname, './{{outputFormat}}/utils/index.hbs'),
       },
     ],
   });
 
-  plop.setGenerator('index.ts', {
+  plop.setGenerator('index', {
     actions: () => [
       {
         type: 'add',
-        path: 'models/index.ts',
-        templateFile: path.join(__dirname, './models/index.ts.hbs'),
+        path: 'models/index.{{outputFormat}}',
+        templateFile: path.join(__dirname, './{{outputFormat}}/models/index.hbs'),
       },
       {
         type: 'add',
-        path: 'index.ts',
-        templateFile: path.join(__dirname, './index.ts.hbs'),
+        path: 'index.{{outputFormat}}',
+        templateFile: path.join(__dirname, './{{outputFormat}}/index.hbs'),
       },
       {
         type: 'add',
@@ -49,12 +49,12 @@ module.exports = function (plop) {
     ],
   });
 
-  plop.setGenerator('Model.ts', {
+  plop.setGenerator('Model', {
     actions: () => [
       {
         type: 'add',
-        path: 'models/{{modelName}}.ts',
-        templateFile: path.join(__dirname, './models/Model.ts.hbs'),
+        path: 'models/{{modelName}}.{{outputFormat}}',
+        templateFile: path.join(__dirname, './{{outputFormat}}/models/Model.hbs'),
       },
     ],
   });
