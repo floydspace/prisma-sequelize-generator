@@ -35,7 +35,7 @@ generator client {
 }
 ```
 
-With a custom output path (default=./sequelize)
+With a custom output path (`./sequelize` - default)
 
 ```prisma
 generator client {
@@ -43,6 +43,17 @@ generator client {
   output = "custom-output-path"
 }
 ```
+
+Additional options
+
+```prisma
+generator client {
+  provider = "prisma-sequelize-generator"
+  outputFormat = "typescript"
+}
+```
+
+Supported output formats are `javascript` (alias `js` - default) and `typescript` (alias `ts`).
 
 ### 3. Run generation
 
