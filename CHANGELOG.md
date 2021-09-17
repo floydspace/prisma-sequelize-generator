@@ -1,3 +1,10 @@
+## [1.0.0-beta.5](https://github.com/floydspace/prisma-sequelize-generator/compare/v1.0.0-beta.4...v1.0.0-beta.5) (2021-09-17)
+
+
+### Features
+
+* support js code models generation ([bb915d0](https://github.com/floydspace/prisma-sequelize-generator/commit/bb915d081241fcfafd918be65b7c8f114b6c75f7))
+
 ## [1.0.0-beta.4](https://github.com/floydspace/prisma-sequelize-generator/compare/v1.0.0-beta.3...v1.0.0-beta.4) (2021-09-14)
 
 
